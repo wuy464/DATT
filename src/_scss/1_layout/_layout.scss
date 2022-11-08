@@ -1,0 +1,70 @@
+/* layout
+------------------------------------------------------------*/
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $body-font;
+    margin: 0;
+    background-color: $color-bg;
+    font-size: 1rem;
+    overflow: hidden;
+    width: 100vw;
+
+
+    .is-fixed {
+        position: fixed;
+        overflow: hidden;
+        width: 100vw;
+    }
+
+    @include sp {
+        min-width: 320px;
+    }
+
+    a:hover {
+        opacity: 0.7;
+    }
+}
+
+.l-container {
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(166, 166, 166);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #f2d7d3;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #cd0000;
+}
+
+
+
+
+//-------------------------------------------------------
+main {
+    // padding: 0px 0 100px;
+    overflow: hidden;
+}
+
+
+
+//-------------------------------------------------------

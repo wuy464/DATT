@@ -1,0 +1,41 @@
+<%- include('_layouts/register', { title: 'Register page' }); -%>
+
+<!-- @content -->
+<main class="p-main">
+  <!-- <section class="c-register">
+    
+  </section> -->
+ 
+   
+    <section class="c-register" onclick="onclick">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="center">
+          <h2> Register</h2>
+          <form class="c-register__form" action="#">
+            <div class="c-register__fname">
+              <label for="firstname">First Name</label>
+              <input id="firstname" name="firstname" type="text">
+            </div>
+            <div class="c-register__lname">
+              <label for="lastname">Last Name</label>
+              <input id="lastname" name="lastname" type="text">
+            </div>
+            <div class="c-register__email">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="text">
+            </div>
+            <div class="c-register__password">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="text">
+            </div>
+            <div class="c-register__button">
+              <button type="submit">Register</button>
+              <a href="./login.html">You have a account?</a>
+            </div>
+          </form>
+        </div>
+        
+    </section>
+</main>
+<!-- @@content -->

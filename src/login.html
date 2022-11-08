@@ -1,0 +1,31 @@
+<%- include('_layouts/login', { title: 'Login page' }); -%>
+
+<!-- @content -->
+<main class="p-main">
+   
+        <section class="c-login" onclick="onclick">
+            <div class="top"></div>
+            <div class="bottom"></div>
+            <div class="center">
+              <h2> Sign In</h2>
+              <form class="c-login__form" action="#">
+                <div>
+                    <label for="">Email</label>
+                    <input name="email" type="email" placeholder="email"/>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input name="password" type="password" placeholder="password"/>
+                </div>
+                <div class="c-login__button">
+                    <button type="submit">Login</button>
+                    <a href="./register.html">You don't have a account?</a>
+                </div>
+              </form>
+            </div>
+            
+        </section>
+      
+   
+  </main>
+  <!-- @@content -->
