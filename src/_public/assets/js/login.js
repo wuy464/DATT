@@ -33,31 +33,12 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     window.location.href = "/";
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//   }
-// });
+
 
 const loginForm = document.querySelector(".c-login__form");
 
 
-function logOut() {
-  signOut(auth)
-    .then(() => {
-      // Sign-out successful.
-    })
-    .catch((error) => {
-      // An error happened.
-    });
-}
-// logOut();
+
 
 function Login(email, pass) {
   signInWithEmailAndPassword(auth, email, pass)
@@ -87,3 +68,4 @@ loginForm.addEventListener("submit", function (e) {
   console.log(password);
   Login(email, password);
 });
+

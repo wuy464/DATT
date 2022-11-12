@@ -1,5 +1,5 @@
 $( ".c-header__left" ).click(function() {
-	console.log('a')
+	
 	// ===== If Nav is not open	
 	if($('.c-modal__overlayleft').css("display") == "none"){
 		TweenMax.to({opacity: 1, display: 'flex', ease: Power2.easeInOut});
@@ -31,14 +31,14 @@ $('.c-header__play').click(function(){
 });
 
 $('.c-header__pause').click(function(){
-    console.log('b')
+  
 	TweenMax.to($('.c-header__pause'), 0.2, {x: -20, opacity: 0, display: 'none', scale: 0.2, ease: Power2.easeInOut});
 	TweenMax.fromTo($('.c-header__play'), 0.2, {x: 20, opacity: 0, scale: 0.2, display: 'none'},
 								 {x: 0, opacity: 1, display: 'block', scale: 1, ease: Power2.easeInOut});
 });
 // ===== Open Player =====
 $( ".c-header__bars, .c-header__info" ).click(function() {
-	console.log('a')
+
 	// ===== If Nav is not open	
 	if($('.c-modal__overlayright').css("display") == "none"){
 		TweenMax.to({opacity: 1, display: 'block', ease: Power2.easeInOut});
@@ -49,9 +49,11 @@ $( ".c-header__bars, .c-header__info" ).click(function() {
 		
     }
 })
+
+
 // ===== Close Player =====
 $( ".c-modal__dim" ).click(function() {
-	console.log('a')
+	
 	// ===== If Nav is not open	
 	if($('.c-modal__overlayright').css("display") == "flex"){
 		TweenMax.to({opacity: 0, display: 'none', ease: Power2.easeInOut});
@@ -59,17 +61,14 @@ $( ".c-modal__dim" ).click(function() {
     }
 })
 $( ".c-modal__dim" ).click(function() {
-	console.log('b')
+
 	// ===== If Nav is not open	
 	if($('.c-modal__overlayleft').css("display") == "flex"){
 		TweenMax.to({opacity: 0, display: 'none', ease: Power2.easeInOut});
        TweenMax.to(".c-modal__overlayleft", 0.5, {xPercent: -100, display:'none', ease: Expo.easeOut});
     }
 })
-	$("body").click(function(e) {
-	console.log(e.target)
-		
-	})
+
 
 
 
@@ -105,6 +104,29 @@ $('.c-index__title').click(function() {
 	homeToMain.fromTo($('.c-curation__list'), 0.8, {opacity: 0, display: 'none', x: 30},
 		{opacity: 1, x: 0, display: 'flex', ease: Power2.easeInOut}, 1.2)
 })
+// ===== Open All music ===== //
+$( ".allmusic" ).click(function() {
+	var playlistToMain = new TimelineMax({});
+	playlistToMain.fromTo($('.c-playlist'), 0.8, {display: 'none', opacity: 0, scale: 0}, 
+										{display: 'flex', opacity: 1, scale: 1.1, ease: Power2.easeInOut}, 0)
+	
+})
+$('.c-playlist__btnback').click(function(){
+	var playlistToMain = new TimelineMax({});
+	// Hide
+	playlistToMain.fromTo($('.c-playlist'), 0.8, {display: 'flex', opacity: 1, scale: 1.1}, 
+										{display: 'none', opacity: 0, scale: 0, ease: Power2.easeInOut}, 0)
+		
+})
+// $( ".c-playlist__btnback" ).click(function() {
+// 	var homeToMain = new TimelineMax({});
+// 	homeToMain.fromTo($('.c-playlist__btnback'), 0.8, {opacity:1, x: 30},
+// 	{display: 'none', opacity: 1, x: 0, ease: Power2.ease},0.5),
+// 	// Show
+// 	homeToMain.fromTo($('.c-playlist'), 0.8, {opacity:0, x: 30},
+// 										{display: 'none', opacity: 0, x: 0, ease: Power2.easeInOut},0.5)
+	
+// })
 
 
 // ===== Curation Page to Playlist Page Transition  =====
@@ -154,6 +176,4 @@ $('.c-curation__btnback').click(function(){
 
 
 
-$("body").click(function(e) {
-	console.log(e.target)
-})
+

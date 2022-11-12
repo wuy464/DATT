@@ -4,11 +4,13 @@
     &__nav {
         padding-top: 20px;
         display: flex;
+
         align-items: center;
         justify-content: space-between;
         position: fixed;
         width: 90%;
         position: absolute;
+        z-index: 1200;
 
     }
 
@@ -113,6 +115,10 @@
     }
 
     &__play {
+        display: block;
+    }
+
+    &__pause {
         display: none;
     }
 
