@@ -35,18 +35,33 @@ const db = getFirestore(firebase);
 const listSong = document.querySelector(".c-modal__menu2");
 const nextbtn = $(".next");
 const prevbtn = $(".prev");
-const input = document.getElementById("search-input");
-const searchBtn = document.getElementById("search-btn");
-const lineAnimate = $(".line")
-
+const playbtn = $(".play");
+const repeatbtn = $(".loop");
+const pausebtn = $(".pause");
+const rangeBar = $(".c-player__progress input");
+const playerImg = $(".c-player__img");
 const musicRef = collection(db, "music");
 const musicsSnap = await getDocs(musicRef);
+const audio = document.querySelector('audio')
+
+
+
+let timer;
+displayTimer();
+
+// click player
+playbtn.click(playAudio);
+pausebtn.click(pauseAudio);
+let isRepeat = false;
+
+
+
+
+//render song
 musicsSnap.forEach((doc) => {
   renderSongs({ id: doc.id, ...doc.data() });
 });
 const musicsArr = convertSnapshortToArray(musicsSnap);
-
-
 function renderSongs(item) {
   const template = `<div class="c-modal__songitem " data-music-id=${item.id}>
   <div class="load-1">
@@ -70,47 +85,35 @@ function renderSongs(item) {
 let indexMusic = 0;
 let music;
 $('.c-modal__songitem').click(function () {
-    const item = $(this)[0];
-    const musicId = $(item).data("music-id");
-    music = musicsArr.find((item) => item.id === musicId );
-    indexMusic = musicsArr.indexOf(music);
-    console.log(music)
-    loadMusic();
-    playAudio();
+  const item = $(this)[0];
+  const musicId = $(item).data("music-id");
+  music = musicsArr.find((item) => item.id === musicId );
+  indexMusic = musicsArr.indexOf(music);
+  localStorage.setItem("currentSong", music.id);
+  loadMusic();
+  playAudio();
 });
-// next and prev song
+loadMusic()
+//load next and prev song
 function loadMusic() {
     music = musicsArr[indexMusic];
-    console.log(music)
     modalTitle.text(music.name);
     modalAuthor.text(music.author);
     modalImg.attr("src", `${music.image}`);
     $(mainAudio).attr("src", `${music.url}`);
     const active = $('.c-modal__songitem')[indexMusic];
     $('.c-modal__songitem').removeClass('is-active')
-    $(active).addClass('is-active')
-    localStorage.setItem("currentSong", music.id);
+    $(active).addClass('is-active');
+    
    
 }
-loadMusic()
-nextbtn.click(function() {
-    indexMusic++
-    indexMusic > musicsArr.length ? indexMusic = 0 : indexMusic = indexMusic;
-    loadMusic()
-     playAudio();
-  })
-  prevbtn.click(function() {
-    indexMusic--;
-    indexMusic < 0 ? indexMusic = musicsArr.length : indexMusic = indexMusic;
-    loadMusic()
-  })
 
 
+//load localstorange
 $(document).ready(function () {
   const musicID = localStorage.getItem("currentSong");
   console.log(musicID);
   if (musicID) {
-      
     const music = musicsArr.find((item) => item.id === musicID);
     if (music) {
      let  indexSong = musicsArr.indexOf(music);
@@ -119,9 +122,123 @@ $(document).ready(function () {
         modalAuthor.text(songLocal.author);
         modalImg.attr("src", `${songLocal.image}`);
         $(mainAudio).attr("src", `${songLocal.url}`);
+        
     }
   }
 });
+
+
+
+
+
+
+nextbtn.click(function() {
+    indexMusic++
+    indexMusic > musicsArr.length ? indexMusic = 0 : indexMusic = indexMusic;
+    loadMusic()
+    playAudio()
+     
+  })
+  prevbtn.click(function() {
+    indexMusic--;
+    indexMusic < 0 ? indexMusic = musicsArr.length : indexMusic = indexMusic;
+    loadMusic()
+    playAudio()
+  })
+
+
+
+// let isPlaying = true;
+// function playPause() {
+//   if(isPlaying) {
+//    mainAudio[0].play()
+//    playbtn.css('display', 'none');
+//   pausebtn.css('display', 'block');
+//     isPlaying = false;
+//     timer = setInterval(displayTimer, 500)
+//   }else {
+//     mainAudio[0].pause();
+//       pausebtn.css('display', 'none');
+//   playbtn.css('display', 'block');
+//     isPlaying = true;
+//     clearInterval(timer)
+  
+//   }
+// }
+
+// hien thi thoi gian
+function displayTimer() {
+  const duration = mainAudio[0].duration;
+  const currentTime = mainAudio[0].currentTime;
+  rangeBar[0].value = currentTime
+  rangeBar[0].max = duration
+  if(!duration) {
+    startTime.text('00:00')
+  }else {
+      endTime.text(formatTimer(duration))
+      startTime.text(formatTimer(currentTime))
+    }
+}
+
+
+
+//format time
+function formatTimer(number) {
+  const minutes = Math.floor(number / 60);
+  const second = Math.floor(number - minutes * 60);
+  return `${minutes}:${second < 10 ? `0${second}` : second}`
+}
+
+
+function changeBarPlayer() {
+    mainAudio[0].currentTime =  rangeBar[0].value
+}
+rangeBar.change(changeBarPlayer)
+
+audio.addEventListener('ended', endedAudio)
+function endedAudio() {
+  
+  if(isRepeat) {
+    indexMusic = indexMusic
+    loadMusic()
+    playAudio()
+  }else {
+    indexMusic++;
+    loadMusic()
+    playAudio()
+    indexMusic > musicsArr.length ? indexMusic = 0 : indexMusic = indexMusic
+  }
+}
+
+repeatbtn.click(function() {
+if(isRepeat) {
+  isRepeat = false
+}else {
+  isRepeat = true
+}
+  console.log(isRepeat)
+})
+
+
+function playAudio() {
+  mainAudio[0].play();
+  playerImg.addClass('is-playing')
+  playbtn.css('display', 'none');
+  pausebtn.css('display', 'block');
+  
+  timer = setInterval(displayTimer, 500)
+}
+function pauseAudio() {
+  mainAudio[0].pause();
+  playerImg.removeClass('is-playing')
+  playbtn.css('display', 'block');
+  pausebtn.css('display', 'none');
+  clearInterval(timer)
+}
+
+
+
+
 
 
 //search
