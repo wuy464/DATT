@@ -99,6 +99,7 @@
         height: 30px;
         object-fit: cover;
         margin-right: 10px;
+        pointer-events: none;
     }
 
     &__number {
@@ -107,12 +108,14 @@
         display: inline-block;
         margin-right: 10px;
         margin-left: 10px;
+        pointer-events: none;
     }
 
     &__info {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        pointer-events: none;
     }
 
     &__song {
@@ -125,11 +128,15 @@
         text-transform: none;
     }
 
+
     &__icon {
         margin-left: auto;
         font-size: 2rem;
         line-height: 1;
     }
+
+
+
 
     &__content {
         margin-left: 30%;

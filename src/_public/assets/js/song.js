@@ -39,7 +39,10 @@ const playbtn = $(".play");
 const repeatbtn = $(".loop");
 const pausebtn = $(".pause");
 const rangeBar = $(".c-player__progress input");
+const volBar = $(".c-player__vol input");
 const playerImg = $(".c-player__img");
+const unMute = $(".c-player__volmedium");
+const mute = $(".c-player__mute");
 const musicRef = collection(db, "music");
 const musicsSnap = await getDocs(musicRef);
 const audio = document.querySelector('audio')
@@ -58,8 +61,11 @@ let isRepeat = false;
 
 
 //render song
+
 musicsSnap.forEach((doc) => {
   renderSongs({ id: doc.id, ...doc.data() });
+  
+  
 });
 const musicsArr = convertSnapshortToArray(musicsSnap);
 function renderSongs(item) {
@@ -84,16 +90,16 @@ function renderSongs(item) {
 }
 let indexMusic = 0;
 let music;
-$('.c-modal__songitem').click(function () {
-  const item = $(this)[0];
-  const musicId = $(item).data("music-id");
-  music = musicsArr.find((item) => item.id === musicId );
-  indexMusic = musicsArr.indexOf(music);
-  localStorage.setItem("currentSong", music.id);
-  loadMusic();
-  playAudio();
-});
-loadMusic()
+// $('.c-modal__songitem').click(function () {
+//   const item = $(this)[0];
+//   const musicId = $(item).data("music-id");
+//   music = musicsArr.find((item) => item.id === musicId );
+//   indexMusic = musicsArr.indexOf(music);
+//   localStorage.setItem("currentSong", music.id);
+//   loadMusic();
+//   playAudio();
+// });
+// loadMusic()
 //load next and prev song
 function loadMusic() {
     music = musicsArr[indexMusic];
@@ -104,6 +110,8 @@ function loadMusic() {
     const active = $('.c-modal__songitem')[indexMusic];
     $('.c-modal__songitem').removeClass('is-active')
     $(active).addClass('is-active');
+
+   
     
    
 }
@@ -122,6 +130,9 @@ $(document).ready(function () {
         modalAuthor.text(songLocal.author);
         modalImg.attr("src", `${songLocal.image}`);
         $(mainAudio).attr("src", `${songLocal.url}`);
+        $('.c-modal__songitem').removeClass('is-active')
+        let active = $('.c-modal__songitem')[indexSong];
+        $(active).addClass('is-active');
         
     }
   }
@@ -148,30 +159,16 @@ nextbtn.click(function() {
 
 
 
-// let isPlaying = true;
-// function playPause() {
-//   if(isPlaying) {
-//    mainAudio[0].play()
-//    playbtn.css('display', 'none');
-//   pausebtn.css('display', 'block');
-//     isPlaying = false;
-//     timer = setInterval(displayTimer, 500)
-//   }else {
-//     mainAudio[0].pause();
-//       pausebtn.css('display', 'none');
-//   playbtn.css('display', 'block');
-//     isPlaying = true;
-//     clearInterval(timer)
-  
-//   }
-// }
 
 // hien thi thoi gian
 function displayTimer() {
   const duration = mainAudio[0].duration;
   const currentTime = mainAudio[0].currentTime;
+  const vol = mainAudio[0].volume * 100;
   rangeBar[0].value = currentTime
   rangeBar[0].max = duration
+  volBar[0].value = vol
+
   if(!duration) {
     startTime.text('00:00')
   }else {
@@ -195,6 +192,33 @@ function changeBarPlayer() {
 }
 rangeBar.change(changeBarPlayer)
 
+function changeVolPlayer() {
+  let vol = mainAudio[0].volume * 100
+ vol = volBar.value
+}
+volBar.change(changeVolPlayer)
+
+
+unMute.click(toggleMuteVol)
+mute.click(toggleMuteVol)
+
+
+let volMute = false
+function toggleMuteVol() {
+  if(volMute == false) {
+    volMute = true;
+    console.log(volMute)
+    unMute.css('display', 'none');
+    mute.css('display', 'block');
+    mainAudio[0].volume = 0;
+  } else {
+    volMute = false;
+    unMute.css('display', 'block');
+    mute.css('display', 'none');
+    mainAudio[0].volume = 1;
+  }
+}
+
 audio.addEventListener('ended', endedAudio)
 function endedAudio() {
   
@@ -213,8 +237,10 @@ function endedAudio() {
 repeatbtn.click(function() {
 if(isRepeat) {
   isRepeat = false
+  repeatbtn.css('color', '#fff')
 }else {
   isRepeat = true
+  repeatbtn.css('color', '#fcc5c1')
 }
   console.log(isRepeat)
 })
@@ -232,6 +258,7 @@ function pauseAudio() {
   mainAudio[0].pause();
   playerImg.removeClass('is-playing')
   playbtn.css('display', 'block');
+  pausebtn.css('color', '#fcc5c1')
   pausebtn.css('display', 'none');
   clearInterval(timer)
 }
